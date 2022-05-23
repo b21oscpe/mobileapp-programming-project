@@ -8,7 +8,7 @@ import androidx.appcompat.widget.Toolbar;
 public class MainActivity extends AppCompatActivity {
 
 
-    private final String JSON_URL = "//http://mobprog.webug.se/json-api?login=b21oscpe";
+    private final String JSON_URL = "https://mobprog.webug.se/json-api?login=b21oscpe";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
