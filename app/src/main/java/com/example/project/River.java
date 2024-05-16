@@ -1,6 +1,6 @@
 package com.example.project;
 
-public class Rivers {
+public class River {
 
     String ID;
     String name;
@@ -48,7 +48,7 @@ public class Rivers {
         this.auxdata = auxdata;
     }
 
-    public Rivers(String ID, String name, String location, Integer size, String auxdata){
+    public River(String ID, String name, String location, Integer size, String auxdata){
         this.ID = ID;
         this.name = name;
         this.location = location;
