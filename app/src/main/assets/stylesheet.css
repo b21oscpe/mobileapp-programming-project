@@ -1,0 +1,26 @@
+body, html{
+    padding: 20px;
+    margin: 0px;
+}
+
+main{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+h1{
+    width: 100%;
+    color: white;
+    padding: 10px;
+    background-color: #4F4B88;
+}
+
+strong{
+    font-size: 20px;
+}
+
+p{
+    text-align: justify;
+}
