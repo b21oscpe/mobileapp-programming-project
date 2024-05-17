@@ -29,11 +29,12 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         String location = rivers.get(position).getLocation();
         Integer size = rivers.get(position).getSize();
         String aux = rivers.get(position).getAuxdata();
+        Integer auxLength = aux.split(",").length;
 
-        holder.river.setText(river);
-        holder.location.setText(location);
-        holder.size.setText(size.toString());
-        holder.aux.setText(aux);
+        holder.river.setText(String.format("Namn: %s", river));
+        holder.location.setText(String.format("Anslutning: %s", location));
+        holder.size.setText(String.format("Längd: %skm", size.toString()));
+        holder.aux.setText(String.format("Passerar (%d): %s", auxLength, aux));
     }
 
     @Override
