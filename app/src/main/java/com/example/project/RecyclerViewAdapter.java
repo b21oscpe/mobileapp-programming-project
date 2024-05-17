@@ -7,13 +7,16 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
+import java.util.List;
 
 
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.RiverViewHolder>  {
-    private final ArrayList<River> rivers;
+    private List<River> rivers;
+    private final List<River> allRivers;
 
-    public RecyclerViewAdapter(ArrayList<River> rivers) {
+    public RecyclerViewAdapter(List<River> rivers) {
         this.rivers = rivers;
+        this.allRivers = new ArrayList<>(rivers);
     }
 
     @NonNull
@@ -40,6 +43,11 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     @Override
     public int getItemCount() {
         return rivers.size();
+    }
+
+    public void filter(Filter filter, String query) {
+        rivers = filter.apply(allRivers, query);
+        notifyDataSetChanged();
     }
 
     public class RiverViewHolder extends RecyclerView.ViewHolder {
