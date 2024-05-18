@@ -45,8 +45,8 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         return rivers.size();
     }
 
-    public void filter(Filter filter, String query) {
-        rivers = filter.apply(allRivers, query);
+    public void filter(Filter filter) {
+        rivers = filter.apply(allRivers);
         notifyDataSetChanged();
     }
 

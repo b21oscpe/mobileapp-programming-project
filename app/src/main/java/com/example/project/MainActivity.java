@@ -1,13 +1,15 @@
 package com.example.project;
 
 import android.annotation.SuppressLint;
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -28,48 +30,20 @@ public class MainActivity extends AppCompatActivity implements JsonTask.JsonTask
 
     private RecyclerView recyclerView;
 
+    private Filter filter;
+
     private Button about_button;
 
-    private Button ascending_button;
-
-    private Button descending_button;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
         new JsonTask(this).execute(JSON_URL);
 
         about_button = findViewById(R.id.about_button);
-        ascending_button = findViewById(R.id.filter_asc);
-        descending_button = findViewById(R.id.filter_dsc);
-
-        about_button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Log.d("==>", "Navigated to 'About'");
-                Intent intent = new Intent(MainActivity.this, AboutActivity.class);
-                startActivity(intent);
-            }
-        });
-
-        ascending_button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Log.d("==>", "Filtered rivers in ascending order by length");
-                Filter filter = new FilterAscending();
-                recyclerViewAdapter.filter(filter, "");
-            }
-        });
-
-        descending_button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Log.d("==>", "Filtered rivers in descending order by length");
-                Filter filter = new FilterDescending();
-                recyclerViewAdapter.filter(filter, "");
-            }
-        });
     }
 
     @SuppressLint("NotifyDataSetChanged")
@@ -86,6 +60,50 @@ public class MainActivity extends AppCompatActivity implements JsonTask.JsonTask
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(recyclerViewAdapter);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        switch (id){
+            case R.id.action_filter_asc:
+                filterAscending();
+                Log.d("==>","Filters ascending");
+                return true;
+            case R.id.action_filter_dsc:
+                filterDescending();
+                Log.d("==>","Filters descending");
+                return true;
+            case R.id.action_filter_alph:
+                filterAlphabetical();
+                Log.d("==>","Filters alphabetical");
+                return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    public void filterAscending(){
+        filter = new FilterAscending();
+        recyclerViewAdapter.filter(filter);
+    }
+
+    public void filterDescending(){
+        filter = new FilterDescending();
+        recyclerViewAdapter.filter(filter);
+    }
+
+    public void filterAlphabetical(){
+        filter = new FilterAlphabetical();
+        recyclerViewAdapter.filter(filter);
     }
 
 }

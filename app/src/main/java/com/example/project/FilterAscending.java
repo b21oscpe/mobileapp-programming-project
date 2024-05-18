@@ -6,7 +6,7 @@ import java.util.List;
 
 public class FilterAscending implements Filter{
     @Override
-    public List<River> apply(List<River> items, String query) {
+    public List<River> apply(List<River> items) {
 
         Collections.sort(items, new Comparator<River>() {
             @Override
