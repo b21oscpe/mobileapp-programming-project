@@ -9,6 +9,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.SearchView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -20,6 +22,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Objects;
 
 @SuppressWarnings("FieldCanBeLocal")
 public class MainActivity extends AppCompatActivity implements JsonTask.JsonTaskListener {
@@ -34,9 +37,11 @@ public class MainActivity extends AppCompatActivity implements JsonTask.JsonTask
 
     private Filter filter;
 
-    SharedPreferences preferences;
+    private SharedPreferences preferences;
 
     private Button about_button;
+
+    private SearchView search_field;
 
 
     @Override
@@ -57,6 +62,28 @@ public class MainActivity extends AppCompatActivity implements JsonTask.JsonTask
                 startActivity(intent);
             }
         });
+
+        search_field = findViewById(R.id.search);
+        search_field.clearFocus();
+        search_field.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String s) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String s) {
+                filterSearch(s);
+                return true;
+            }
+
+        });
+    }
+
+    @Override
+    protected void onResume() {
+        Log.d("==>", "onResume");
+        super.onResume();
     }
 
     @SuppressLint("NotifyDataSetChanged")
@@ -82,22 +109,21 @@ public class MainActivity extends AppCompatActivity implements JsonTask.JsonTask
         return true;
     }
 
-    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
 
         switch (id){
             case R.id.action_filter_asc:
                 filterAscending();
-                Log.d("==>","Filters ascending");
+                Log.d("==>","Sorts ascending");
                 return true;
             case R.id.action_filter_dsc:
                 filterDescending();
-                Log.d("==>","Filters descending");
+                Log.d("==>","Sorts descending");
                 return true;
             case R.id.action_filter_alph:
                 filterAlphabetical();
-                Log.d("==>","Filters alphabetical");
+                Log.d("==>","Sorts alphabetical");
                 return true;
         }
 
@@ -108,20 +134,25 @@ public class MainActivity extends AppCompatActivity implements JsonTask.JsonTask
         filter = new FilterAscending();
         /*
         SharedPreferences.Editor editor = preferences.edit();
-        editor.putInt("filter", edit_name.getText().toString());
+        editor.putString("filter", filter.toString());
         editor.apply();
         */
-        recyclerViewAdapter.filter(filter);
+        recyclerViewAdapter.filter(filter, "");
     }
 
     public void filterDescending(){
         filter = new FilterDescending();
-        recyclerViewAdapter.filter(filter);
+        recyclerViewAdapter.filter(filter, "");
     }
 
     public void filterAlphabetical(){
         filter = new FilterAlphabetical();
-        recyclerViewAdapter.filter(filter);
+        recyclerViewAdapter.filter(filter, "");
+    }
+
+    public void filterSearch(String search){
+        filter = new FilterSearch();
+        recyclerViewAdapter.filter(filter, search);
     }
 
 }

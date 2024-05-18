@@ -1,12 +1,12 @@
 package com.example.project;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.List;
 
 public class FilterDescending implements Filter{
     @Override
-    public List<River> apply(List<River> items) {
+    public ArrayList<River> apply(ArrayList<River> items, String query) {
 
         Collections.sort(items, new Comparator<River>() {
             @Override

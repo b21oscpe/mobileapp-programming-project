@@ -1,7 +1,8 @@
 <resources>
     <string name="app_name">The river project</string>
-    <string name="button_about">About</string>
+    <string name="button_about">About us</string>
     <string name="action_filter_asc">Ascending</string>
     <string name="action_filter_dsc">Descending</string>
     <string name="action_filter_alph">Alphabetical</string>
+    <string name="search_hint">Search for a river…</string>
 </resources>

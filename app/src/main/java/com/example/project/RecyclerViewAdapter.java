@@ -15,12 +15,12 @@ import java.util.List;
 
 
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.RiverViewHolder>  {
-    private List<River> rivers;
-    private final List<River> allRivers;
+    private ArrayList<River> rivers;
+    private final ArrayList<River> allRivers;
 
     private final Context context;
 
-    public RecyclerViewAdapter(Context context, List<River> rivers) {
+    public RecyclerViewAdapter(Context context, ArrayList<River> rivers) {
         this.context = context;
         this.rivers = rivers;
         this.allRivers = new ArrayList<>(rivers);
@@ -49,8 +49,8 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         return rivers.size();
     }
 
-    public void filter(Filter filter) {
-        rivers = filter.apply(allRivers);
+    public void filter(Filter filter, String query) {
+        rivers = filter.apply(allRivers, query);
         notifyDataSetChanged();
     }
 
