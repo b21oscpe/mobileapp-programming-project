@@ -2,6 +2,7 @@ package com.example.project;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -33,6 +34,8 @@ public class MainActivity extends AppCompatActivity implements JsonTask.JsonTask
 
     private Filter filter;
 
+    SharedPreferences preferences;
+
     private Button about_button;
 
 
@@ -43,6 +46,7 @@ public class MainActivity extends AppCompatActivity implements JsonTask.JsonTask
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         new JsonTask(this).execute(JSON_URL);
+        preferences = getSharedPreferences("preferences", MODE_PRIVATE);
 
         about_button = findViewById(R.id.about_button);
         about_button.setOnClickListener(new View.OnClickListener() {
@@ -63,7 +67,7 @@ public class MainActivity extends AppCompatActivity implements JsonTask.JsonTask
         Type type = new TypeToken<ArrayList<River>>(){}.getType();
         rivers = gson.fromJson(json, type);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
-        recyclerViewAdapter = new RecyclerViewAdapter(rivers);
+        recyclerViewAdapter = new RecyclerViewAdapter(this, rivers);
         recyclerViewAdapter.notifyDataSetChanged();
         recyclerView = findViewById(R.id.recycle_view);
         recyclerView.setLayoutManager(layoutManager);
@@ -102,6 +106,11 @@ public class MainActivity extends AppCompatActivity implements JsonTask.JsonTask
 
     public void filterAscending(){
         filter = new FilterAscending();
+        /*
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putInt("filter", edit_name.getText().toString());
+        editor.apply();
+        */
         recyclerViewAdapter.filter(filter);
     }
 

@@ -16,14 +16,14 @@
         tools:ignore="MissingConstraints">
 
         <TextView
-            android:id="@+id/river"
+            android:id="@+id/d_river"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/textColor"
             app:layout_constraintStart_toStartOf="@+id/river" />
 
         <TextView
-            android:id="@+id/location"
+            android:id="@+id/d_location"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
@@ -33,7 +33,7 @@
             app:layout_constraintTop_toBottomOf="@+id/river" />
 
         <TextView
-            android:id="@+id/size"
+            android:id="@+id/d_size"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
@@ -41,6 +41,16 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/location" />
+
+        <TextView
+            android:id="@+id/d_aux"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:textColor="@color/textColor"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/size" />
 
     </LinearLayout>
 
