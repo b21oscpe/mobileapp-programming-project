@@ -1,42 +1,88 @@
 
-# Rapport
+# Rapport for projektuppgift
 
-**Skriv din rapport här!**
-
-_Du kan ta bort all text som finns sedan tidigare_.
-
-## Följande grundsyn gäller dugga-svar:
-
-- Ett kortfattat svar är att föredra. Svar som är längre än en sida text (skärmdumpar och programkod exkluderat) är onödigt långt.
-- Svaret skall ha minst en snutt programkod.
-- Svaret skall inkludera en kort övergripande förklarande text som redogör för vad respektive snutt programkod gör eller som svarar på annan teorifråga.
-- Svaret skall ha minst en skärmdump. Skärmdumpar skall illustrera exekvering av relevant programkod. Eventuell text i skärmdumpar måste vara läsbar.
-- I de fall detta efterfrågas, dela upp delar av ditt svar i för- och nackdelar. Dina för- respektive nackdelar skall vara i form av punktlistor med kortare stycken (3-4 meningar).
-
-Programkod ska se ut som exemplet nedan. Koden måste vara korrekt indenterad då den blir lättare att läsa vilket gör det lättare att hitta syntaktiska fel.
-
+### RecyclerView
+För uppgiften har det skapats en recyclerview där varje item har en onclick-listener, där en detaljvy presenteras med ytterligare data om vilka länder varje "river" går igenom.
 ```
-function errorCallback(error) {
-    switch(error.code) {
-        case error.PERMISSION_DENIED:
-            // Geolocation API stöds inte, gör något
-            break;
-        case error.POSITION_UNAVAILABLE:
-            // Misslyckat positionsanrop, gör något
-            break;
-        case error.UNKNOWN_ERROR:
-            // Okänt fel, gör något
-            break;
+public RiverViewHolder(final View itemView) {
+            super(itemView);
+            river = itemView.findViewById(R.id.river);
+            location = itemView.findViewById(R.id.location);
+            size = itemView.findViewById(R.id.size);
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    River river = rivers.get(getAdapterPosition());
+                    Log.d("==>", String.format("Navigated to %s", river.getID()));
+                    Intent intent = new Intent(context, DetailedActivity.class);
+                    intent.putExtra("name", river.getName());
+                    intent.putExtra("location", river.getLocation());
+                    intent.putExtra("size", river.getSize().toString());
+                    intent.putExtra("aux", river.getAuxdata());
+                    context.startActivity(intent);
+                }
+            });
+        }
+```
+För att recyclerview skulle fungera behövdes en dataklass:
+```
+public River(String ID, String name, String location, Integer size, String auxdata){
+        this.ID = ID;
+        this.name = name;
+        this.location = location;
+        this.size = size;
+        this.auxdata = auxdata;
     }
+```
+
+### Filter (FilterSearch, FilterAlphabetical, ...)
+Filter interfacet skapades för att skapa flera olika filter som kan appliceras på listan med "rivers". Klasser såsom FilterSearch implementerar interfacet. 
+Filtret appliceras i ```RecyclerViewAdapter.java``` på ```allRivers``` listan. Valet av filtrering görs med knappar/textfält i ```MainActivity.java```.
+```
+public interface Filter {
+    ArrayList<River> apply(ArrayList<River> items, String query);
 }
 ```
+För att kunna spara filtret har jag använt mig av SharedPreferences där en string bestämmer vilket filter som ska appliceras. Alla andra strings än de cases som är bestämda tolkas som en search.
+```
+SharedPreferences preferences = getSharedPreferences("preferences", MODE_PRIVATE);
+        String filter = preferences.getString("filter", "none");
+        Log.d("==>", filter);
+        switch (filter) {
+            case "ascending":
+                filterAscending();
+            case "descending":
+                filterDescending();
+            case "alphabetical":
+                filterAlphabetical();
+            case "none":
+                break;
+            default:
+                filterSearch(filter);
+        }
+```
+Home
+![home](https://github.com/b21oscpe/mobileapp-programming-project/assets/102578165/83ac010b-5f31-4ca7-854e-c0150662ce5a)
 
-Bilder läggs i samma mapp som markdown-filen.
+Search
+![search](https://github.com/b21oscpe/mobileapp-programming-project/assets/102578165/99cbfcad-c994-4777-9724-4ebcaa2460dc)
 
-![](android.png)
+Sort ascending
+![sort_asc](https://github.com/b21oscpe/mobileapp-programming-project/assets/102578165/9d608ee2-449f-455a-9943-e9707a295807)
 
-Läs gärna:
+About
+![about](https://github.com/b21oscpe/mobileapp-programming-project/assets/102578165/fdf0b78e-bdd4-4f83-8bf3-08600a0737dd)
 
-- Boulos, M.N.K., Warren, J., Gong, J. & Yue, P. (2010) Web GIS in practice VIII: HTML5 and the canvas element for interactive online mapping. International journal of health geographics 9, 14. Shin, Y. &
-- Wunsche, B.C. (2013) A smartphone-based golf simulation exercise game for supporting arthritis patients. 2013 28th International Conference of Image and Vision Computing New Zealand (IVCNZ), IEEE, pp. 459–464.
-- Wohlin, C., Runeson, P., Höst, M., Ohlsson, M.C., Regnell, B., Wesslén, A. (2012) Experimentation in Software Engineering, Berlin, Heidelberg: Springer Berlin Heidelberg.
+Detailed
+![detailed](https://github.com/b21oscpe/mobileapp-programming-project/assets/102578165/2d9c3d60-900c-4088-bac3-dc732e1cfe34)
+
+Preferences
+[filter_saved.webm](https://github.com/b21oscpe/mobileapp-programming-project/assets/102578165/a31746b7-0bd9-4b2e-976d-54c69480ec4f)
+
+
+
+
+
+
+
