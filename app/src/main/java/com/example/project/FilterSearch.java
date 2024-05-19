@@ -12,8 +12,7 @@ public class FilterSearch implements Filter{
                 result.add(item);
             }
         }
-
-        return result;
-
+        if (!result.isEmpty()) return result;
+        else return items;
     }
 }
